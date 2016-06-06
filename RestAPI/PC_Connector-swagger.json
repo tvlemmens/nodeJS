@@ -1,0 +1,531 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Web Services Datadip API",
+        "description": "API for the Web Services Datadip Connector",
+        "version": "1.0.1"
+    },
+    "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "paths": {
+        "/GetContactByPhoneNumber": {
+            "post": {
+                "description": "Looks up a contact by phone number.",
+                "parameters": [
+                    {
+                        "name": "PhoneNumberRequest",
+                        "in": "body",
+                        "description": "The request body.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PhoneNumber"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a contact corresponding to the provided phone number.",
+                        "schema": {
+                            "$ref": "#/definitions/Contact"
+                        }
+                    },
+					"204": {
+						"description": "Indicates that a search was completed correctly, but no results were found."
+					},
+					"409": {
+						"description": "Indicates that a search was completed correctly, but multiple results were found."
+					},
+					"501": {
+						"description": "Indicates that the particular function requested was intentionally not implemented."
+					},
+					"default": {
+						"description": "Indicates other errors.  The body of the response is returned in its entirety as the error message."
+					}
+                }
+            }
+        },
+        "/GetAccountByAccountNumber": {
+            "post": {
+                "description": "Looks up an account by account number.",
+                "parameters": [
+                    {
+                        "name": "AccountNumberRequest",
+                        "in": "body",
+                        "description": "The request body.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AccountNumber"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns an account corresponding to the provided account number.",
+                        "schema": {
+                            "$ref": "#/definitions/Account"
+                        }
+                    },
+					"204": {
+						"description": "Indicates that a search was completed correctly, but no results were found."
+					},
+					"409": {
+						"description": "Indicates that a search was completed correctly, but multiple results were found."
+					},
+					"501": {
+						"description": "Indicates that the particular function requested was intentionally not implemented."
+					},
+					"default": {
+						"description": "Indicates other errors.  The body of the response is returned in its entirety as the error message."
+					}
+                }
+            }
+        },
+        "/GetAccountByPhoneNumber": {
+            "post": {
+                "description": "Looks up an account by phone number.",
+                "parameters": [
+                    {
+                        "name": "PhoneNumberRequest",
+                        "in": "body",
+                        "description": "The request body.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/PhoneNumber"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns an account corresponding to the provided phone number.",
+                        "schema": {
+                            "$ref": "#/definitions/Account"
+                        }
+                    },
+					"204": {
+						"description": "Indicates that a search was completed correctly, but no results were found."
+					},
+					"409": {
+						"description": "Indicates that a search was completed correctly, but multiple results were found."
+					},
+					"501": {
+						"description": "Indicates that the particular function requested was intentionally not implemented."
+					},
+					"default": {
+						"description": "Indicates other errors.  The body of the response is returned in its entirety as the error message."
+					}
+                }
+            }
+        },
+        "/GetAccountByContactId": {
+            "post": {
+                "description": "Looks up an account by contact ID.",
+                "parameters": [
+                    {
+                        "name": "ContactIdRequest",
+                        "in": "body",
+                        "description": "The request body.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ContactId"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns an account corresponding to the provided contact ID.",
+                        "schema": {
+                            "$ref": "#/definitions/Account"
+                        }
+                    },
+					"204": {
+						"description": "Indicates that a search was completed correctly, but no results were found."
+					},
+					"409": {
+						"description": "Indicates that a search was completed correctly, but multiple results were found."
+					},
+					"501": {
+						"description": "Indicates that the particular function requested was intentionally not implemented."
+					},
+					"default": {
+						"description": "Indicates other errors.  The body of the response is returned in its entirety as the error message."
+					}
+                }
+            }
+        },
+        "/GetMostRecentOpenCaseByContactId": {
+            "post": {
+                "description": "Looks up the most recent open case by contact ID.",
+                "parameters": [
+                    {
+                        "name": "ContactIdRequest",
+                        "in": "body",
+                        "description": "The request body.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ContactId"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns a case corresponding to the provided contact ID.",
+                        "schema": {
+                            "$ref": "#/definitions/Case"
+                        }
+                    },
+					"204": {
+						"description": "Indicates that a search was completed correctly, but no results were found."
+					},
+					"409": {
+						"description": "Indicates that a search was completed correctly, but multiple results were found."
+					},
+					"501": {
+						"description": "Indicates that the particular function requested was intentionally not implemented."
+					},
+					"default": {
+						"description": "Indicates other errors.  The body of the response is returned in its entirety as the error message."
+					}
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Account": {
+            "description": "An account object from your CRM",
+            "properties": {
+                "Id": {
+                    "type": "string",
+                    "description": "ID of the Account"
+                },
+                "Name": {
+                    "type": "string",
+                    "description": "Name of the Account"
+                },
+                "Number": {
+                    "type": "string",
+                    "description": "The Account Number"
+                },
+				"EmailAddresses": {
+                    "type": "object",
+                    "description": "Email Addresses of the Contact",
+                    "required": [
+                        "EmailAddress"
+                    ],
+                    "properties": {
+                        "EmailAddress": {
+                            "type": "array",
+                            "description": "Array of Email Addresses of the Contact",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "EmailAddress": {
+                                        "type": "string",
+                                        "description": "Email Address of the Contact"
+                                    },
+                                    "EmailType": {
+                                        "type": "integer",
+                                        "description": "Type of Email Address"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+				"PhoneNumbers": {
+                    "type": "object",
+                    "description": "Phone Numbers of the Contact",
+                    "required": [
+                        "PhoneNumber"
+                    ],
+                    "properties": {
+                        "PhoneNumber": {
+                            "type": "array",
+                            "description": "Array of Phone Numbers of the Contact",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "Number": {
+                                        "type": "string",
+                                        "description": "Phone Number of the Contact"
+                                    },
+                                    "PhoneType": {
+                                        "type": "integer",
+                                        "description": "Type of Phone Number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "Addresses": {
+                    "type": "object",
+                    "description": "Addresses of the Account",
+                    "required": [
+                        "Address"
+                    ],
+                    "properties": {
+                        "Address": {
+                            "type": "array",
+                            "description": "Array of Addresses of the Account",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "City": {
+                                        "type": "string",
+                                        "description": "City of the Address"
+                                    },
+                                    "Country": {
+                                        "type": "string",
+                                        "description": "Country of the Address"
+                                    },
+                                    "Line1": {
+                                        "type": "string",
+                                        "description": "Line 1 of the Address"
+                                    },
+                                    "Line2": {
+                                        "type": "string",
+                                        "description": "Line 2 of the Address"
+                                    },
+                                    "Line3": {
+                                        "type": "string",
+                                        "description": "Line 3 of the Address"
+                                    },
+                                    "PostalCode": {
+                                        "type": "string",
+                                        "description": "Postal Code of the Address"
+                                    },
+                                    "State": {
+                                        "type": "string",
+                                        "description": "State of the Address"
+                                    },
+                                    "Type": {
+                                        "type": "string",
+                                        "description": "Type of Address"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "CustomAttribute": {
+                    "type": "string",
+                    "description": "The value of the custom attribute provided in the request"
+                }
+            }
+        },
+        "Contact": {
+            "type": "object",
+            "description": "A Contact",
+            "required": [
+                "Id"
+            ],
+            "properties": {
+                "EmailAddresses": {
+                    "type": "object",
+                    "description": "Email Addresses of the Contact",
+                    "required": [
+                        "EmailAddress"
+                    ],
+                    "properties": {
+                        "EmailAddress": {
+                            "type": "array",
+                            "description": "Array of Email Addresses of the Contact",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "EmailAddress": {
+                                        "type": "string",
+                                        "description": "Email Address of the Contact"
+                                    },
+                                    "EmailType": {
+                                        "type": "integer",
+                                        "description": "Type of Email Address"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "FirstName": {
+                    "type": "string",
+                    "description": "First Name of the Contact"
+                },
+                "LastName": {
+                    "type": "string",
+                    "description": "Last Name of the Contact"
+                },
+				"FullName": {
+                    "type": "string",
+                    "description": "Full Name of the Contact"
+                },
+                "Id": {
+                    "type": "string",
+                    "description": "ID of the Contact"
+                },
+                "PhoneNumbers": {
+                    "type": "object",
+                    "description": "Phone Numbers of the Contact",
+                    "required": [
+                        "PhoneNumber"
+                    ],
+                    "properties": {
+                        "PhoneNumber": {
+                            "type": "array",
+                            "description": "Array of Phone Numbers of the Contact",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "Number": {
+                                        "type": "string",
+                                        "description": "Phone Number of the Contact"
+                                    },
+                                    "PhoneType": {
+                                        "type": "integer",
+                                        "description": "Type of Phone Number"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "Address": {
+                    "type": "object",
+                    "description": "Address of the Contact",
+                    "properties": {
+                        "City": {
+                            "type": "string",
+                            "description": "City of the Address"
+                        },
+                        "Country": {
+                            "type": "string",
+                            "description": "Country of the Address"
+                        },
+                        "Line1": {
+                            "type": "string",
+                            "description": "Line 1 of the Address"
+                        },
+                        "Line2": {
+                            "type": "string",
+                            "description": "Line 2 of the Address"
+                        },
+                        "Line3": {
+                            "type": "string",
+                            "description": "Line 3 of the Address"
+                        },
+                        "PostalCode": {
+                            "type": "string",
+                            "description": "Postal Code of the Address"
+                        },
+                        "State": {
+                            "type": "string",
+                            "description": "State of the Address"
+                        },
+                        "Type": {
+                            "type": "integer",
+                            "description": "Type of Address"
+                        }
+                    }
+                },
+                "CustomAttribute": {
+                    "type": "string",
+                    "description": "The value of the custom attribute provided in the request"
+                }
+            }
+        },
+        "Case": {
+            "type": "object",
+            "description": "A Case",
+            "required": [
+                "Id"
+            ],
+            "properties": {
+                "AssigneeId": {
+                    "type": "string",
+                    "description": "The Assignee ID of the Case"
+                },
+                "ContactId": {
+                    "type": "string",
+                    "description": "The Contact ID for the Case"
+                },
+                "ContactName": {
+                    "type": "string",
+                    "description": "The Contact Name for the Case"
+                },
+                "Id": {
+                    "type": "string",
+                    "description": "The ID of the Case"
+                },
+                "Status": {
+                    "type": "string",
+                    "description": "The Status of the Case"
+                },
+                "Subject": {
+                    "type": "string",
+                    "description": "The Subject of the Case"
+                },
+                "CustomAttribute": {
+                    "type": "string",
+                    "description": "The value of the custom attribute provided in the request"
+                }
+            }
+        },
+        "PhoneNumber": {
+            "title": "PhoneNumberRequest",
+            "description": "A phone number based request",
+            "required": [
+                "PhoneNumber"
+            ],
+            "type": "object",
+            "properties": {
+                "PhoneNumber": {
+                    "type": "string",
+                    "description": "The phone number used to query the CRM"
+                },
+                "CustomAttribute": {
+                    "type": "string",
+                    "description": "Additional attribute requested"
+                }
+            }
+        },
+        "ContactId": {
+            "title": "ContactIdRequest",
+            "description": "A Contact Id based request",
+            "required": [
+                "ContactId"
+            ],
+            "type": "object",
+            "properties": {
+                "ContactId": {
+                    "type": "string",
+                    "description": "The Contact ID used to query the CRM"
+                },
+                "CustomAttribute": {
+                    "type": "string",
+                    "description": "Additional attribute requested"
+                }
+            }
+        },
+        "AccountNumber": {
+            "title": "AccountNumberRequest",
+            "description": "An Account number based request",
+            "required": [
+                "AccountNumber"
+            ],
+            "type": "object",
+            "properties": {
+                "AccountNumber": {
+                    "type": "string",
+                    "description": "The account number used to query the CRM"
+                },
+                "CustomAttribute": {
+                    "type": "string",
+                    "description": "Additional attribute requested"
+                }
+            }
+        }
+    }
+}
