@@ -31,7 +31,7 @@ app.get('/sendEmail',function(req, res){
         emailBody    =  req.query.inputBody;
 
     var mailOptions = {
-        from: 'vanlemmens@telenet.be', // sender address
+        from: '', // sender address
         to: emailTo, // list of receivers
         subject: emailSubject, // Subject line
         text: emailBody
@@ -40,8 +40,8 @@ app.get('/sendEmail',function(req, res){
         host: 'smtp.telenet.be',
         port: 587,
         auth: {
-            user: 'a022673', // Your email id
-            pass: 'g0tcha1' // Your password
+            user: '', // Your email id
+            pass: '' // Your password
         }
     });
 
