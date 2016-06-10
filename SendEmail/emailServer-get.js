@@ -32,8 +32,8 @@ app.get('/sendEmail',function(req, res){
         host: 'smtp.telenet.be',
         port: 587,
         auth: {
-            user: 'a022673', // Your email id
-            pass: 'g0tcha1' // Your password
+            user: '', // Your email id
+            pass: '' // Your password
         }
     });
 
