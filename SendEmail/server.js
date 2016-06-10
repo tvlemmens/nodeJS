@@ -14,8 +14,8 @@ app.get('/listUsers', function (req, res) {
       host: 'smtp.telenet.be',
       port: 587,
       auth: {
-          user: 'a022673', // Your email id
-          pass: 'g0tcha1' // Your password
+          user: '', // Your email id
+          pass: '' // Your password
       }
   });
 
@@ -43,8 +43,8 @@ var server = app.listen(8081, function () {
 
 var text = "Hi, this is a mail sent from a web form";
 var mailOptions = {
-    from: 'vanlemmens@telenet.be', // sender address
-    to: 'tom.vanlemmens@inin.com', // list of receivers
+    from: '', // sender address
+    to: '', // list of receivers
     subject: 'Email Example', // Subject line
     text: text //, // plaintext body
     // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
