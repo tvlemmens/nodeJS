@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Geocoding service</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <script type="text/javascript">
+      //initialize variables
+      //using get_params to retrieve info from search field
+      var params = get_params(location.search);
+      if (typeof params.address === "string") {
+        console.log("we're setting custAddress");
+        var custAddress = params.address;
+      } else custAddress = "";
+      var custLocation = params.location;
+      var ourLocations = {
+        "Antwerpen": ["Lange Beeldekensstraat 100, Antwerpen",
+                      "Wapper, Antwerpen",
+                      "Eekhoornlaan, Antwerpen",
+                      "Gitsschotellei, Antwerpen",
+                      "Maantjessteenweg, Merksem",
+                      "Hertsdeinstraat, Antwerpen"
+                    ],
+        "Liege": ["Rue Libotte, Liege",
+                  "Rue Gretry, Liege",
+                  "Rue Bureaufoss, Liege",
+                  "Route du Condroz, Liege",
+                  "Rue Malvaux, Liege"],
+        "Arlon": ["Rue des Tilleuls, Arlon",
+                  "Rue de Viville, Arlon",
+                  "Rue de Sesselich, Arlon",
+                  "Rue de la Meuse, Arlon"],
+        "Bruxelles": ["Keizer Karellaan, Brussel",
+                      "Jacqmainlaan, Brussel",
+                      "Pachecolaan, Brussel",
+                      "Wetstraat, Brussel",
+                      "Louisalaan, Brussel",
+                      "Avenue du Globe, Brussel",
+                      "Marcel Thirylaan, Brussel",
+                      "Houtweg, Evere",
+                      "Henri Genesselaan, Anderlecht"]
+      };
+
+      //start page with initial map centered around customer location
+      // retrieved from GET parameters
+      function initMap() {
+        //get customer's location lat & long via geocoder
+        var geocoder = new google.maps.Geocoder();
+        console.log(custAddress);
+        console.log(custLocation);
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 10,
+            center: {lat: 50.8387874, lng: 4.2933655}
+          });
+        updateMap(geocoder, map);
+        setMarkers(geocoder, map);
+      }
+
+        //update map to center around customer location:
+        function updateMap(geocoder, map){
+          var dropMarker;
+          var lookupAddress;
+          if (custAddress === "") {
+            lookupAddress = custLocation;
+            dropMarker = false;
+          } else {
+            lookupAddress = custAddress;
+            dropMarker = true;
+          };
+          geocoder.geocode({'address': lookupAddress}, function(results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+              map.setCenter(results[0].geometry.location);
+              map.setZoom(12);
+
+              if (dropMarker) {
+                var image = 'http://www.myiconfinder.com/uploads/iconsets/32-32-a5485b563efc4511e0cd8bd04ad0fe9e.png';
+                var marker = new google.maps.Marker({
+                  map: map,
+                  position: { lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng() },
+                  icon: image,
+                  animation:google.maps.Animation.DROP
+                });
+                //marker.setAnimation(google.maps.Animation.BOUNCE);
+              }
+
+
+
+              console.log({ lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng() });
+            } else {
+              alert('Geocode was not successful for the following reason: ' + status);
+            }
+          });
+        }
+
+
+        function setMarkers(geocoder, map){
+          for (var i = 0; i < ourLocations[custLocation].length; i++) {
+            geocoder.geocode({'address': ourLocations[custLocation][i]}, function(results, status) {
+              if (status === google.maps.GeocoderStatus.OK) {
+                var marker = new google.maps.Marker({
+                  map: map,
+                  position: { lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng() }
+                });
+
+                console.log({ lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng() });
+
+              } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+              }
+            });
+          };
+        }
+
+    // function to decode GET params in URL (location.search)
+      function get_params(search_string) {
+        var parse = function(params, pairs) {
+          var pair = pairs[0];
+          var parts = pair.split('=');
+          var key = decodeURIComponent(parts[0]);
+          var value = decodeURIComponent(parts.slice(1).join('='));
+
+          // Handle multiple parameters of the same name
+          if (typeof params[key] === "undefined") {
+            params[key] = value;
+          } else {
+            params[key] = [].concat(params[key], value);
+          }
+
+          return pairs.length == 1 ? params : parse(params, pairs.slice(1))
+        }
+
+        // Get rid of leading ?
+        return search_string.length == 0 ? {} : parse({}, search_string.substr(1).split('&'));
+        // Finally, to get the param you want
+        // params['c'];
+      };
+
+    </script>
+
+
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTJdDz4aGosYj-O6Gb5WPgAf6h6OtdZMw&callback=initMap">
+    </script>
+  </body>
+</html>
+exce
